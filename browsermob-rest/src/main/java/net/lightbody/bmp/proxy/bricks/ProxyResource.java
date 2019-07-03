@@ -56,7 +56,11 @@ public class ProxyResource {
     public Reply<?> getProxies() {
         Collection<ProxyDescriptor> proxyList = new ArrayList<ProxyDescriptor>();
         for (LegacyProxyServer proxy : proxyManager.get()) {
-            proxyList.add(new ProxyDescriptor(proxy.getPort()));
+            try {
+                proxyList.add(new ProxyDescriptor(proxy.getPort()));
+            } catch (Exception e) {
+                continue;
+            }
         }
         return Reply.with(new ProxyListDescriptor(proxyList)).as(Json.class);
     }
